@@ -1,30 +1,44 @@
 import * as THREE from "three";
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
-const geometry = new THREE.BoxGeometry(1, 1, 1);
-const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cube = new THREE.Mesh(geometry, material);
-scene.add(cube);
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+  45,
+  window.innerWidth / window.innerHeight,
+  1,
+  1000
+);
 
-camera.position.z = 5;
+const controls = new OrbitControls(camera, renderer.domElement);
+const loader = new GLTFLoader();
+
+// Plane
+const planeGeometry = new THREE.PlaneGeometry(30, 30);
+const materialPlane = new THREE.MeshBasicMaterial({
+  color: 0xffff00,
+  side: THREE.DoubleSide,
+});
+const planeMesh = new THREE.Mesh(planeGeometry, materialPlane);
+planeMesh.rotateX(-Math.PI / 2);
+scene.add(planeMesh);
+
+// Base Cylinder
+const cylinderGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
+const materialCylinder = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const cylinderMesh = new THREE.Mesh(cylinderGeometry, materialCylinder);
+scene.add(cylinderMesh);
+
+camera.position.set(0, 20, 100);
+controls.update();
 
 function animate() {
   requestAnimationFrame(animate);
-
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
-
+  controls.update();
   renderer.render(scene, camera);
 }
 
