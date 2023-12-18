@@ -25,13 +25,28 @@ const materialPlane = new THREE.MeshBasicMaterial({
 });
 const planeMesh = new THREE.Mesh(planeGeometry, materialPlane);
 planeMesh.rotateX(-Math.PI / 2);
+planeMesh.position.y = -5.5;
 scene.add(planeMesh);
 
-// Base Cylinder
-const cylinderGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
+// First Base Cylinder
+const baseCylinderGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
 const materialCylinder = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-const cylinderMesh = new THREE.Mesh(cylinderGeometry, materialCylinder);
+const cylinderMesh = new THREE.Mesh(baseCylinderGeometry, materialCylinder);
 scene.add(cylinderMesh);
+
+// First Articulation Cylinder
+const articulationCylinderGeometry = new THREE.CylinderGeometry(5, 5, 9, 32);
+const materialArticulationCylinder = new THREE.MeshBasicMaterial({
+  color: 0xff0000,
+});
+const cylinderArticulationMesh = new THREE.Mesh(
+  articulationCylinderGeometry,
+  materialArticulationCylinder
+);
+cylinderArticulationMesh.position.y = 10;
+cylinderArticulationMesh.rotation.x = Math.PI / 2;
+
+scene.add(cylinderArticulationMesh);
 
 camera.position.set(0, 20, 100);
 controls.update();
