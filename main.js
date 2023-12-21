@@ -20,13 +20,13 @@ const loader = new GLTFLoader();
 // Plane
 
 function PlaneConstructor() {
-  this.geometry = new THREE.PlaneGeometry(30, 30);
+  this.geometry = new THREE.PlaneGeometry(50, 50);
   this.material = new THREE.MeshBasicMaterial({
     color: 0xffffff,
     side: THREE.DoubleSide,
   });
   this.mesh = new THREE.Mesh(this.geometry, this.material);
-  this.mesh.position.set(0, -5, 0);
+  this.mesh.position.set(0, -5.1, 0);
   this.mesh.rotation.x = -Math.PI / 2;
   scene.add(this.mesh);
 }
@@ -49,6 +49,10 @@ function CylinderConstructor() {
   this.pivot = new THREE.Group();
   this.pivot.add(this.mesh);
 
+  this.lowerArm = function () {
+    let lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
+  };
+
   scene.add(this.pivot);
 }
 
@@ -62,10 +66,10 @@ let customPositionCylinder = new CylinderConstructor({
 CylinderConstructor.prototype.update = () => {};
 
 function SphereConstructor() {
-  this.geometry = new THREE.SphereGeometry(5, 64, 32);
+  this.geometry = new THREE.SphereGeometry(4.95, 64, 32);
   this.material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
   this.sphere = new THREE.Mesh(this.geometry, this.material);
-  this.sphere.position.y = 6;
+  this.sphere.position.y = 5;
   scene.add(this.sphere);
 
   let axesHelper = new THREE.AxesHelper(15);
