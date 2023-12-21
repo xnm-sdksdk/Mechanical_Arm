@@ -22,7 +22,7 @@ const loader = new GLTFLoader();
 function PlaneConstructor() {
   this.geometry = new THREE.PlaneGeometry(30, 30);
   this.material = new THREE.MeshBasicMaterial({
-    color: 0xffff00,
+    color: 0xffffff,
     side: THREE.DoubleSide,
   });
   this.mesh = new THREE.Mesh(this.geometry, this.material);
@@ -42,27 +42,77 @@ function CylinderConstructor() {
   this.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
   this.mesh = new THREE.Mesh(this.geometry, this.material);
   scene.add(this.mesh);
+
+  let axesHelper = new THREE.AxesHelper(10);
+  this.mesh.add(axesHelper);
+
+  this.pivot = new THREE.Group();
+  this.pivot.add(this.mesh);
+
+  scene.add(this.pivot);
 }
 
 let customPositionCylinder = new CylinderConstructor({
   position: new THREE.Vector3(0, 0, 0),
 });
 
+//! Pivot
+//! Helper
+
 CylinderConstructor.prototype.update = () => {};
 
-// First Articulation Cylinder
-// const articulationCylinderGeometry = new THREE.CylinderGeometry(5, 5, 9, 32);
-// const materialArticulationCylinder = new THREE.MeshBasicMaterial({
-//   color: 0xff0000,
-// });
-// const cylinderArticulationMesh = new THREE.Mesh(
-//   articulationCylinderGeometry,
-//   materialArticulationCylinder
-// );
-// cylinderArticulationMesh.position.y = 10;
-// cylinderArticulationMesh.rotation.x = Math.PI / 2;
+function SphereConstructor() {
+  this.geometry = new THREE.SphereGeometry(5, 64, 32);
+  this.material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+  this.sphere = new THREE.Mesh(this.geometry, this.material);
+  this.sphere.position.y = 6;
+  scene.add(this.sphere);
+
+  let axesHelper = new THREE.AxesHelper(15);
+  this.sphere.add(axesHelper);
+
+  this.pivot = new THREE.Group();
+  this.pivot.add(this.sphere);
+
+  scene.add(this.pivot);
+}
+
+let customPositionSphere = new SphereConstructor({
+  position: new THREE.Vector3(0, 0, 0),
+});
 
 // scene.add(cylinderArticulationMesh);
+function createArm() {
+  var armGroup = new THREE.Group(); // Create a group to hold the entire arm
+
+  // Create upper arm geometry and material
+  var upperArmGeometry = new THREE.CylinderGeometry(1, 1, 5, 32);
+  var upperArmMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+
+  // Create upper arm mesh
+  var upperArmMesh = new THREE.Mesh(upperArmGeometry, upperArmMaterial);
+  armGroup.add(upperArmMesh); // Add upper arm to the group
+
+  // Create lower arm geometry and material
+  var lowerArmGeometry = new THREE.CylinderGeometry(0.8, 0.8, 5, 32);
+  var lowerArmMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+
+  // Create lower arm mesh
+  var lowerArmMesh = new THREE.Mesh(lowerArmGeometry, lowerArmMaterial);
+  lowerArmMesh.position.y = -2.5; // Position lower arm relative to upper arm
+  armGroup.add(lowerArmMesh); // Add lower arm to the group
+
+  // Position the arm group
+  armGroup.position.set(0, 2.5, 0);
+
+  // Add the arm group to the scene
+  scene.add(armGroup);
+
+  return armGroup; // Return the group in case you need to reference it later
+}
+
+// Create an arm
+var arm = createArm();
 
 camera.position.set(0, 20, 100);
 controls.update();
@@ -71,6 +121,8 @@ controls.update();
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
+  arm.rotation.y += 0.01;
+
   // Render the scene
   renderer.render(scene, camera);
 }
