@@ -49,16 +49,23 @@ function CylinderConstructor() {
   this.pivot = new THREE.Group();
   this.pivot.add(this.mesh);
 
-  this.lowerArm = function () {
-    let lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
-  };
-
+  this.lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
+  this.lowerArmMaterial = new THREE.MeshBasicMaterial({ color: 0x234f1a });
+  this.lowerArmMesh = new THREE.Mesh(
+    this.lowerArmGeometry,
+    this.lowerArmMaterial
+  );
+  this.lowerArmMesh.position.y = 15;
+  this.lowerArmMesh.position.x = 0;
+  this.pivot.add(this.lowerArmMesh);
   scene.add(this.pivot);
 }
 
 let customPositionCylinder = new CylinderConstructor({
   position: new THREE.Vector3(0, 0, 0),
 });
+
+function EdgesConstructor() {}
 
 //! Pivot
 //! Helper
