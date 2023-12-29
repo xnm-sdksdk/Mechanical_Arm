@@ -26,7 +26,7 @@ function PlaneConstructor() {
     side: THREE.DoubleSide,
   });
   this.mesh = new THREE.Mesh(this.geometry, this.material);
-  this.mesh.position.set(0, -5.1, 0);
+  this.mesh.position.set(0, -5, 0);
   this.mesh.rotation.x = -Math.PI / 2;
   scene.add(this.mesh);
 }
@@ -49,13 +49,14 @@ function CylinderConstructor() {
   this.pivot = new THREE.Group();
   this.pivot.add(this.mesh);
 
-  this.lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
+  this.lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 15, 32);
   this.lowerArmMaterial = new THREE.MeshBasicMaterial({ color: 0x234f1a });
   this.lowerArmMesh = new THREE.Mesh(
     this.lowerArmGeometry,
     this.lowerArmMaterial
   );
-  this.lowerArmMesh.position.y = 15;
+  this.lowerArmMesh.add(axesHelper);
+  this.lowerArmMesh.position.y = 30;
   this.lowerArmMesh.position.x = 0;
   this.pivot.add(this.lowerArmMesh);
   scene.add(this.pivot);
@@ -73,10 +74,19 @@ function EdgesConstructor() {}
 CylinderConstructor.prototype.update = () => {};
 
 function SphereConstructor() {
-  this.geometry = new THREE.SphereGeometry(4.95, 64, 32);
+  this.geometry = new THREE.SphereGeometry(
+    4.5,
+    64,
+    32,
+    0,
+    1 * Math.PI,
+    0,
+    1 * Math.PI
+  );
   this.material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
   this.sphere = new THREE.Mesh(this.geometry, this.material);
-  this.sphere.position.y = 5;
+  this.sphere.position.y = 9.5;
+  this.sphere.position.z = 0.8;
   scene.add(this.sphere);
 
   let axesHelper = new THREE.AxesHelper(15);
@@ -93,37 +103,37 @@ let customPositionSphere = new SphereConstructor({
 });
 
 // scene.add(cylinderArticulationMesh);
-function createArm() {
-  var armGroup = new THREE.Group(); // Create a group to hold the entire arm
+// function createArm() {
+//   var armGroup = new THREE.Group(); // Create a group to hold the entire arm
 
-  // Create upper arm geometry and material
-  var upperArmGeometry = new THREE.CylinderGeometry(1, 1, 5, 32);
-  var upperArmMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+//   // Create upper arm geometry and material
+//   var upperArmGeometry = new THREE.CylinderGeometry(1, 1, 5, 32);
+//   var upperArmMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
-  // Create upper arm mesh
-  var upperArmMesh = new THREE.Mesh(upperArmGeometry, upperArmMaterial);
-  armGroup.add(upperArmMesh); // Add upper arm to the group
+//   // Create upper arm mesh
+//   var upperArmMesh = new THREE.Mesh(upperArmGeometry, upperArmMaterial);
+//   armGroup.add(upperArmMesh); // Add upper arm to the group
 
-  // Create lower arm geometry and material
-  var lowerArmGeometry = new THREE.CylinderGeometry(0.8, 0.8, 5, 32);
-  var lowerArmMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+//   // Create lower arm geometry and material
+//   var lowerArmGeometry = new THREE.CylinderGeometry(0.8, 0.8, 5, 32);
+//   var lowerArmMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 
-  // Create lower arm mesh
-  var lowerArmMesh = new THREE.Mesh(lowerArmGeometry, lowerArmMaterial);
-  lowerArmMesh.position.y = -2.5; // Position lower arm relative to upper arm
-  armGroup.add(lowerArmMesh); // Add lower arm to the group
+//   // Create lower arm mesh
+//   var lowerArmMesh = new THREE.Mesh(lowerArmGeometry, lowerArmMaterial);
+//   lowerArmMesh.position.y = -2.5; // Position lower arm relative to upper arm
+//   armGroup.add(lowerArmMesh); // Add lower arm to the group
 
-  // Position the arm group
-  armGroup.position.set(0, 2.5, 0);
+//   // Position the arm group
+//   armGroup.position.set(0, 2.5, 0);
 
-  // Add the arm group to the scene
-  scene.add(armGroup);
+//   // Add the arm group to the scene
+//   scene.add(armGroup);
 
-  return armGroup; // Return the group in case you need to reference it later
-}
+//   return armGroup; // Return the group in case you need to reference it later
+// }
 
 // Create an arm
-var arm = createArm();
+// var arm = createArm();
 
 camera.position.set(0, 20, 100);
 controls.update();
@@ -132,7 +142,7 @@ controls.update();
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
-  arm.rotation.y += 0.01;
+  // arm.rotation.y += 0.01;
 
   // Render the scene
   renderer.render(scene, camera);
