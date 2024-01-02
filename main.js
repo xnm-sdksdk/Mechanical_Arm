@@ -18,12 +18,14 @@ const controls = new OrbitControls(camera, renderer.domElement);
 const loader = new GLTFLoader();
 
 // Plane
+const floor = new THREE.TextureLoader().load("../assets/Material_1861.jpg");
 
 function PlaneConstructor() {
-  this.geometry = new THREE.PlaneGeometry(50, 50);
+  this.geometry = new THREE.PlaneGeometry(100, 100);
   this.material = new THREE.MeshBasicMaterial({
-    color: 0xffffff,
-    side: THREE.DoubleSide,
+    map: floor,
+    roughness: 7,
+    metalness: 5,
   });
   this.mesh = new THREE.Mesh(this.geometry, this.material);
   this.mesh.position.set(0, -5, 0);
@@ -49,14 +51,14 @@ function CylinderConstructor() {
   this.pivot = new THREE.Group();
   this.pivot.add(this.mesh);
 
-  this.lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 15, 32);
+  this.lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
   this.lowerArmMaterial = new THREE.MeshBasicMaterial({ color: 0x234f1a });
   this.lowerArmMesh = new THREE.Mesh(
     this.lowerArmGeometry,
     this.lowerArmMaterial
   );
   this.lowerArmMesh.add(axesHelper);
-  this.lowerArmMesh.position.y = 30;
+  this.lowerArmMesh.position.y = 15;
   this.lowerArmMesh.position.x = 0;
   this.pivot.add(this.lowerArmMesh);
   scene.add(this.pivot);
@@ -74,19 +76,11 @@ function EdgesConstructor() {}
 CylinderConstructor.prototype.update = () => {};
 
 function SphereConstructor() {
-  this.geometry = new THREE.SphereGeometry(
-    4.5,
-    64,
-    32,
-    0,
-    1 * Math.PI,
-    0,
-    1 * Math.PI
-  );
+  this.geometry = new THREE.SphereGeometry(5, 64, 32);
   this.material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
   this.sphere = new THREE.Mesh(this.geometry, this.material);
-  this.sphere.position.y = 9.5;
-  this.sphere.position.z = 0.8;
+  this.sphere.position.y = 7;
+
   scene.add(this.sphere);
 
   let axesHelper = new THREE.AxesHelper(15);
