@@ -24,8 +24,8 @@ function PlaneConstructor() {
   this.geometry = new THREE.PlaneGeometry(100, 100);
   this.material = new THREE.MeshBasicMaterial({
     map: floor,
-    roughness: 7,
-    metalness: 5,
+    // roughness: 7,
+    // metalness: 5,
   });
   this.mesh = new THREE.Mesh(this.geometry, this.material);
   this.mesh.position.set(0, -5, 0);
@@ -89,12 +89,27 @@ function SphereConstructor() {
   this.pivot = new THREE.Group();
   this.pivot.add(this.sphere);
 
+  this.secondArticulation = new THREE.SphereGeometry(5, 64, 32);
+  this.secondArticulationMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffff00,
+  });
+  this.sphereArticulation = new THREE.Mesh(
+    this.secondArticulation,
+    this.secondArticulationMaterial
+  );
+  this.sphereArticulation.add(axesHelper);
+
+  this.sphereArticulation.position.y = 50;
+  this.pivot.add(this.secondArticulation);
   scene.add(this.pivot);
 }
 
 let customPositionSphere = new SphereConstructor({
   position: new THREE.Vector3(0, 0, 0),
 });
+
+SphereConstructor.prototype.update = () => {};
+
 
 // scene.add(cylinderArticulationMesh);
 // function createArm() {
