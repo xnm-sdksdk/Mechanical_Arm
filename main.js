@@ -39,9 +39,15 @@ let customPositionPlane = new PlaneConstructor({
 
 PlaneConstructor.prototype.update = () => {};
 
+const cylinderMetal = new THREE.TextureLoader().load(
+  "../assets/Metal_Plate_Cylinder.jpg"
+);
+
 function CylinderConstructor() {
   this.geometry = new THREE.CylinderGeometry(5, 5, 10, 32);
-  this.material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+  this.material = new THREE.MeshBasicMaterial({
+    map: cylinderMetal,
+  });
   this.mesh = new THREE.Mesh(this.geometry, this.material);
   scene.add(this.mesh);
 
@@ -52,7 +58,7 @@ function CylinderConstructor() {
   this.pivot.add(this.mesh);
 
   this.lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
-  this.lowerArmMaterial = new THREE.MeshBasicMaterial({ color: 0x234f1a });
+  this.lowerArmMaterial = new THREE.MeshBasicMaterial({ map: cylinderMetal });
   this.lowerArmMesh = new THREE.Mesh(
     this.lowerArmGeometry,
     this.lowerArmMaterial
