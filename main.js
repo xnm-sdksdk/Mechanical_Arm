@@ -72,9 +72,11 @@ function EdgesConstructor() {}
 
 CylinderConstructor.prototype.update = () => {};
 
+const sphereMetal = new THREE.TextureLoader().load("../assets/MetalSphere.jpg");
+
 function SphereConstructor() {
   this.geometry = new THREE.SphereGeometry(5, 64, 32);
-  this.material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
+  this.material = new THREE.MeshBasicMaterial({ map: sphereMetal });
   this.sphere = new THREE.Mesh(this.geometry, this.material);
   this.sphere.position.y = 7;
 
@@ -86,7 +88,7 @@ function SphereConstructor() {
 
   this.secondArticulation = new THREE.SphereGeometry(5, 64, 32);
   this.secondArticulationMaterial = new THREE.MeshBasicMaterial({
-    color: 0xffff00,
+    map: sphereMetal,
   });
   this.sphereArticulation = new THREE.Mesh(
     this.secondArticulation,
