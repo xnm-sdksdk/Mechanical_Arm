@@ -81,8 +81,6 @@ function SphereConstructor() {
   this.sphere = new THREE.Mesh(this.geometry, this.material);
   this.sphere.position.y = 7;
 
-  scene.add(this.sphere);
-
   let axesHelper = new THREE.AxesHelper(15);
   this.sphere.add(axesHelper);
 
@@ -97,10 +95,14 @@ function SphereConstructor() {
     this.secondArticulation,
     this.secondArticulationMaterial
   );
-  this.sphereArticulation.add(axesHelper);
+  this.sphereArticulation.position.y = 22;
 
-  this.sphereArticulation.position.y = 50;
-  this.pivot.add(this.secondArticulation);
+  let secondArticulationHelper = new THREE.AxesHelper(15);
+  this.sphereArticulation.add(secondArticulationHelper);
+
+  this.pivot.add(this.sphereArticulation);
+
+  scene.add(this.sphere);
   scene.add(this.pivot);
 }
 
@@ -110,6 +112,22 @@ let customPositionSphere = new SphereConstructor({
 
 SphereConstructor.prototype.update = () => {};
 
+const boxPlate = new THREE.TextureLoader().load("../assets/MetalPlate.jpg");
+
+function BoxConstructor() {
+  this.geometry = new THREE.BoxGeometry(10, 10, 10);
+  this.material = new THREE.MeshBasicMaterial({
+    map: boxPlate,
+  });
+  this.cube = new THREE.Mesh(this.geometry, this.material);
+  this.cube.position.x = 35;
+  this.cube.position.y = 0;
+  scene.add(this.cube);
+}
+
+let customPositionCube = new BoxConstructor({
+  position: new THREE.Vector3(0, 0, 0),
+});
 
 // scene.add(cylinderArticulationMesh);
 // function createArm() {
