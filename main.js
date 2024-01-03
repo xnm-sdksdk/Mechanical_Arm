@@ -70,9 +70,6 @@ let customPositionCylinder = new CylinderConstructor({
 
 function EdgesConstructor() {}
 
-//! Pivot
-//! Helper
-
 CylinderConstructor.prototype.update = () => {};
 
 function SphereConstructor() {
@@ -113,6 +110,7 @@ let customPositionSphere = new SphereConstructor({
 SphereConstructor.prototype.update = () => {};
 
 const boxPlate = new THREE.TextureLoader().load("../assets/MetalPlate.jpg");
+const boxSquare = new THREE.TextureLoader().load("../assets/MetalSquare.jpg");
 
 function BoxConstructor() {
   this.geometry = new THREE.BoxGeometry(10, 10, 10);
@@ -122,45 +120,24 @@ function BoxConstructor() {
   this.cube = new THREE.Mesh(this.geometry, this.material);
   this.cube.position.x = 35;
   this.cube.position.y = 0;
-  scene.add(this.cube);
+
+  this.boxSquareGeometry = new THREE.BoxGeometry(10, 10, 10);
+  this.boxSquareMaterial = new THREE.MeshBasicMaterial({
+    map: boxSquare,
+  });
+  this.boxSquareCube = new THREE.Mesh(
+    this.boxSquareGeometry,
+    this.boxSquareMaterial
+  );
+  this.boxSquareCube.position.x = 35;
+  this.boxSquareCube.position.y = 0;
+  this.boxSquareCube.position.z = 15;
+  scene.add(this.cube, this.boxSquareCube);
 }
 
 let customPositionCube = new BoxConstructor({
   position: new THREE.Vector3(0, 0, 0),
 });
-
-// scene.add(cylinderArticulationMesh);
-// function createArm() {
-//   var armGroup = new THREE.Group(); // Create a group to hold the entire arm
-
-//   // Create upper arm geometry and material
-//   var upperArmGeometry = new THREE.CylinderGeometry(1, 1, 5, 32);
-//   var upperArmMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-
-//   // Create upper arm mesh
-//   var upperArmMesh = new THREE.Mesh(upperArmGeometry, upperArmMaterial);
-//   armGroup.add(upperArmMesh); // Add upper arm to the group
-
-//   // Create lower arm geometry and material
-//   var lowerArmGeometry = new THREE.CylinderGeometry(0.8, 0.8, 5, 32);
-//   var lowerArmMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-
-//   // Create lower arm mesh
-//   var lowerArmMesh = new THREE.Mesh(lowerArmGeometry, lowerArmMaterial);
-//   lowerArmMesh.position.y = -2.5; // Position lower arm relative to upper arm
-//   armGroup.add(lowerArmMesh); // Add lower arm to the group
-
-//   // Position the arm group
-//   armGroup.position.set(0, 2.5, 0);
-
-//   // Add the arm group to the scene
-//   scene.add(armGroup);
-
-//   return armGroup; // Return the group in case you need to reference it later
-// }
-
-// Create an arm
-// var arm = createArm();
 
 camera.position.set(0, 20, 100);
 controls.update();
@@ -169,7 +146,6 @@ controls.update();
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
-  // arm.rotation.y += 0.01;
 
   // Render the scene
   renderer.render(scene, camera);
