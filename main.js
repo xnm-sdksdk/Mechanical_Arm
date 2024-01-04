@@ -44,6 +44,7 @@ const cylinderMetal = new THREE.TextureLoader().load(
 );
 
 function CylinderConstructor() {
+  // First Cylinder
   this.geometry = new THREE.CylinderGeometry(5, 5, 10, 32);
   this.material = new THREE.MeshBasicMaterial({
     map: cylinderMetal,
@@ -57,6 +58,7 @@ function CylinderConstructor() {
   this.pivot = new THREE.Group();
   this.pivot.add(this.mesh);
 
+  // Second Cylinder
   this.lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
   this.lowerArmMaterial = new THREE.MeshBasicMaterial({ map: cylinderMetal });
   this.lowerArmMesh = new THREE.Mesh(
@@ -67,6 +69,18 @@ function CylinderConstructor() {
   this.lowerArmMesh.position.y = 15;
   this.lowerArmMesh.position.x = 0;
   this.pivot.add(this.lowerArmMesh);
+
+  // Third Cylinder
+  this.upperArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
+  this.upperArmMaterial = new THREE.MeshBasicMaterial({ map: cylinderMetal });
+  this.upperArmMesh = new THREE.Mesh(
+    this.upperArmGeometry,
+    this.upperArmMaterial
+  );
+  this.upperArmMesh.add(axesHelper);
+  this.upperArmMesh.position.y = 30;
+  this.upperArmMesh.position.x = 0;
+  this.pivot.add(this.upperArmMesh);
   scene.add(this.pivot);
 }
 
@@ -81,6 +95,7 @@ CylinderConstructor.prototype.update = () => {};
 const sphereMetal = new THREE.TextureLoader().load("../assets/MetalSphere.jpg");
 
 function SphereConstructor() {
+  // First Sphere
   this.geometry = new THREE.SphereGeometry(5, 64, 32);
   this.material = new THREE.MeshBasicMaterial({ map: sphereMetal });
   this.sphere = new THREE.Mesh(this.geometry, this.material);
@@ -92,6 +107,7 @@ function SphereConstructor() {
   this.pivot = new THREE.Group();
   this.pivot.add(this.sphere);
 
+  // Second Sphere
   this.secondArticulation = new THREE.SphereGeometry(5, 64, 32);
   this.secondArticulationMaterial = new THREE.MeshBasicMaterial({
     map: sphereMetal,
@@ -106,6 +122,22 @@ function SphereConstructor() {
   this.sphereArticulation.add(secondArticulationHelper);
 
   this.pivot.add(this.sphereArticulation);
+
+  // Third Sphere
+  this.firstArticulation = new THREE.SphereGeometry(5, 64, 32);
+  this.firstArticulationMaterial = new THREE.MeshBasicMaterial({
+    map: sphereMetal,
+  });
+  this.firstSphereArticulation = new THREE.Mesh(
+    this.firstArticulation,
+    this.firstArticulationMaterial
+  );
+  this.firstSphereArticulation.position.y = 37;
+
+  let firstArticulationHelper = new THREE.AxesHelper(15);
+  this.firstSphereArticulation.add(firstArticulationHelper);
+
+  this.pivot.add(this.firstSphereArticulation);
 
   scene.add(this.sphere);
   scene.add(this.pivot);
