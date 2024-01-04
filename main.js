@@ -1,11 +1,14 @@
+// Imports
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { DragControls } from "three/addons/controls/DragControls.js";
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 
+// Initialization of Scene and Camera
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
   45,
@@ -14,12 +17,22 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
+// Event to resize automatically the window
+window.addEventListener("resize", onWindowResize, false);
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  render();
+}
+
 const controls = new OrbitControls(camera, renderer.domElement);
 const loader = new GLTFLoader();
 
 // Plane
 const floor = new THREE.TextureLoader().load("../assets/Material_1861.jpg");
 
+// Plane Definition
 function PlaneConstructor() {
   this.geometry = new THREE.PlaneGeometry(100, 100);
   this.material = new THREE.MeshBasicMaterial({
@@ -43,6 +56,7 @@ const cylinderMetal = new THREE.TextureLoader().load(
   "../assets/Metal_Plate_Cylinder.jpg"
 );
 
+// Cylinder Definition
 function CylinderConstructor() {
   // First Cylinder
   this.geometry = new THREE.CylinderGeometry(5, 5, 10, 32);
@@ -94,6 +108,7 @@ CylinderConstructor.prototype.update = () => {};
 
 const sphereMetal = new THREE.TextureLoader().load("../assets/MetalSphere.jpg");
 
+// Sphere Definition
 function SphereConstructor() {
   // First Sphere
   this.geometry = new THREE.SphereGeometry(5, 64, 32);
@@ -152,6 +167,7 @@ SphereConstructor.prototype.update = () => {};
 const boxPlate = new THREE.TextureLoader().load("../assets/MetalPlate.jpg");
 const boxSquare = new THREE.TextureLoader().load("../assets/MetalSquare.jpg");
 
+// Box Definition
 function BoxConstructor() {
   this.geometry = new THREE.BoxGeometry(10, 10, 10);
   this.material = new THREE.MeshBasicMaterial({
@@ -179,14 +195,51 @@ let customPositionCube = new BoxConstructor({
   position: new THREE.Vector3(0, 0, 0),
 });
 
+// const cubes = [""];
+
+// const geometryl = new THREE.SphereGeometry(100, 100, 100);
+
+// const wireframe = new THREE.WireframeGeometry(geometryl);
+
+// const line = new THREE.LineSegments(wireframe);
+// line.material.depthTest = false;
+// line.material.opacity = 0.25;
+// line.material.transparent = true;
+
+// scene.add(line);
+
 camera.position.set(0, 20, 100);
 controls.update();
+
+// const geometry = new THREE.BoxGeometry(100, 100, 100);
+// const edges = new THREE.EdgesGeometry(geometry);
+// const linel = new THREE.LineSegments(
+//   edges,
+//   new THREE.LineBasicMaterial({ color: 0xffffff })
+// );
+// scene.add(linel);
+
+// DragControls
+// const dragControls = new DragControls(cubes, camera, renderer.domElement);
+
+// add event listener to highlight dragged objects
+
+// dragControls.addEventListener("dragstart", function (event) {
+//   event.object.material.emissive.set(0xaaaaaa);
+// });
+
+// dragControls.addEventListener("dragend", function (event) {
+//   event.object.material.emissive.set(0x000000);
+// });
 
 // Render loop
 function animate() {
   requestAnimationFrame(animate);
   controls.update();
 
+  // line.rotation.x += 0.001;
+  // line.rotation.y += 0.00001;
+  // line.rotation.z += 0.00001;
   // Render the scene
   renderer.render(scene, camera);
 }
