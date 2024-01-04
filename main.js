@@ -66,7 +66,7 @@ function CylinderConstructor() {
   this.mesh = new THREE.Mesh(this.geometry, this.material);
   scene.add(this.mesh);
 
-  let axesHelper = new THREE.AxesHelper(10);
+  let axesHelper = new THREE.AxesHelper(18);
   this.mesh.add(axesHelper);
 
   this.pivot = new THREE.Group();
@@ -83,6 +83,7 @@ function CylinderConstructor() {
   this.lowerArmMesh.position.y = 15;
   this.lowerArmMesh.position.x = 0;
   this.pivot.add(this.lowerArmMesh);
+  scene.add(this.pivot);
 
   // Third Cylinder
   this.upperArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
@@ -166,9 +167,11 @@ SphereConstructor.prototype.update = () => {};
 
 const boxPlate = new THREE.TextureLoader().load("../assets/MetalPlate.jpg");
 const boxSquare = new THREE.TextureLoader().load("../assets/MetalSquare.jpg");
+const boxMetal = new THREE.TextureLoader().load("../assets/MetalBox.jpg");
 
 // Box Definition
 function BoxConstructor() {
+  // First Box
   this.geometry = new THREE.BoxGeometry(10, 10, 10);
   this.material = new THREE.MeshBasicMaterial({
     map: boxPlate,
@@ -177,6 +180,7 @@ function BoxConstructor() {
   this.cube.position.x = 35;
   this.cube.position.y = 0;
 
+  // Second Box
   this.boxSquareGeometry = new THREE.BoxGeometry(10, 10, 10);
   this.boxSquareMaterial = new THREE.MeshBasicMaterial({
     map: boxSquare,
@@ -188,7 +192,15 @@ function BoxConstructor() {
   this.boxSquareCube.position.x = 35;
   this.boxSquareCube.position.y = 0;
   this.boxSquareCube.position.z = 15;
-  scene.add(this.cube, this.boxSquareCube);
+
+  // Third Box
+  this.thirdBox = new THREE.BoxGeometry(10, 10, 10);
+  this.thirdBoxMaterial = new THREE.MeshBasicMaterial({ map: boxMetal });
+  this.thirdCube = new THREE.Mesh(this.thirdBox, this.thirdBoxMaterial);
+  this.thirdCube.position.y = 0;
+  this.thirdCube.position.x = 35;
+  this.thirdCube.position.z = -15;
+  scene.add(this.cube, this.boxSquareCube, this.thirdCube);
 }
 
 let customPositionCube = new BoxConstructor({
@@ -207,9 +219,6 @@ let customPositionCube = new BoxConstructor({
 // line.material.transparent = true;
 
 // scene.add(line);
-
-camera.position.set(0, 20, 100);
-controls.update();
 
 // const geometry = new THREE.BoxGeometry(100, 100, 100);
 // const edges = new THREE.EdgesGeometry(geometry);
@@ -231,6 +240,10 @@ controls.update();
 // dragControls.addEventListener("dragend", function (event) {
 //   event.object.material.emissive.set(0x000000);
 // });
+
+// Camera Position
+camera.position.set(0, 20, 100);
+controls.update();
 
 // Render loop
 function animate() {
