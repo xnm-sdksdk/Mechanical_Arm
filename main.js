@@ -67,13 +67,15 @@ const materialCylinder = new THREE.MeshBasicMaterial({
 });
 const meshCylinder = new THREE.Mesh(geometryCylinder, materialCylinder);
 let axesFcylinder = new THREE.AxesHelper(18);
-scene.add(axesFcylinder);
+meshCylinder.add(axesFcylinder);
 scene.add(meshCylinder);
 
 // First Sphere
 const geometrySphere = new THREE.SphereGeometry(5, 64, 32);
 const materialSphere = new THREE.MeshBasicMaterial({ map: sphereMetal });
 const sphere = new THREE.Mesh(geometrySphere, materialSphere);
+let axesFsphere = new THREE.AxesHelper(18);
+sphere.add(axesFsphere);
 sphere.position.y = 7;
 meshCylinder.add(sphere);
 
@@ -81,6 +83,8 @@ meshCylinder.add(sphere);
 const lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
 const lowerArmMaterial = new THREE.MeshBasicMaterial({ map: cylinderMetal });
 const lowerArmMesh = new THREE.Mesh(lowerArmGeometry, lowerArmMaterial);
+let axesScylinder = new THREE.AxesHelper(18);
+lowerArmMesh.add(axesScylinder);
 sphere.add(lowerArmMesh);
 lowerArmMesh.position.y = 8;
 lowerArmMesh.position.x = 0;
@@ -96,6 +100,8 @@ const sphereArticulation = new THREE.Mesh(
   secondArticulationMaterial
 );
 sphereArticulation.position.y = 8;
+let axesSsphere = new THREE.AxesHelper(18);
+sphereArticulation.add(axesSsphere);
 lowerArmMesh.add(sphereArticulation);
 
 // let secondArticulationHelper = new THREE.AxesHelper(15);
@@ -110,6 +116,8 @@ const upperArmMesh = new THREE.Mesh(upperArmGeometry, upperArmMaterial);
 upperArmMesh.position.y = 8;
 upperArmMesh.position.x = 0;
 // pivot.add(upperArmMesh);
+let axesTcylinder = new THREE.AxesHelper(18);
+upperArmMesh.add(axesTcylinder);
 sphereArticulation.add(upperArmMesh);
 
 // Third Sphere
