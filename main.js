@@ -66,6 +66,8 @@ const materialCylinder = new THREE.MeshBasicMaterial({
   map: cylinderMetal,
 });
 const meshCylinder = new THREE.Mesh(geometryCylinder, materialCylinder);
+let axesFcylinder = new THREE.AxesHelper(18);
+scene.add(axesFcylinder);
 scene.add(meshCylinder);
 
 // First Sphere
@@ -73,14 +75,14 @@ const geometrySphere = new THREE.SphereGeometry(5, 64, 32);
 const materialSphere = new THREE.MeshBasicMaterial({ map: sphereMetal });
 const sphere = new THREE.Mesh(geometrySphere, materialSphere);
 sphere.position.y = 7;
-scene.add(sphere);
+meshCylinder.add(sphere);
 
 // Second Cylinder
 const lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
 const lowerArmMaterial = new THREE.MeshBasicMaterial({ map: cylinderMetal });
 const lowerArmMesh = new THREE.Mesh(lowerArmGeometry, lowerArmMaterial);
-scene.add(lowerArmMesh);
-lowerArmMesh.position.y = 15;
+sphere.add(lowerArmMesh);
+lowerArmMesh.position.y = 8;
 lowerArmMesh.position.x = 0;
 // this.lowerArmMesh.add(axesHelper);
 
@@ -93,8 +95,8 @@ const sphereArticulation = new THREE.Mesh(
   secondArticulation,
   secondArticulationMaterial
 );
-sphereArticulation.position.y = 22;
-scene.add(sphereArticulation);
+sphereArticulation.position.y = 8;
+lowerArmMesh.add(sphereArticulation);
 
 // let secondArticulationHelper = new THREE.AxesHelper(15);
 // this.sphereArticulation.add(secondArticulationHelper);
@@ -105,10 +107,10 @@ const upperArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
 const upperArmMaterial = new THREE.MeshBasicMaterial({ map: cylinderMetal });
 const upperArmMesh = new THREE.Mesh(upperArmGeometry, upperArmMaterial);
 // upperArmMesh.add(axesHelper);
-upperArmMesh.position.y = 30;
+upperArmMesh.position.y = 8;
 upperArmMesh.position.x = 0;
 // pivot.add(upperArmMesh);
-// scene.add(upperArmMesh);
+sphereArticulation.add(upperArmMesh);
 
 // Third Sphere
 const firstArticulation = new THREE.SphereGeometry(5, 64, 32);
@@ -119,7 +121,32 @@ const firstSphereArticulation = new THREE.Mesh(
   firstArticulation,
   firstArticulationMaterial
 );
-firstSphereArticulation.position.y = 37;
+firstSphereArticulation.position.y = 8;
+upperArmMesh.add(firstSphereArticulation);
+
+// Left Claw
+const leftClaw = new THREE.BoxGeometry(3, 10, 1);
+const leftCMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const leftCMesh = new THREE.Mesh(leftClaw, leftCMaterial);
+leftCMesh.position.y = 1;
+leftCMesh.position.z = 3;
+leftCMesh.position.x = 8;
+
+leftCMesh.rotation.z = 8;
+leftCMesh.rotation.x = 0;
+firstSphereArticulation.add(leftCMesh);
+
+// Right Claw
+const rightClaw = new THREE.BoxGeometry(3, 10, 1);
+const rightCMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const rightCMesh = new THREE.Mesh(rightClaw, rightCMaterial);
+rightCMesh.position.y = 1;
+rightCMesh.position.z = -3;
+rightCMesh.position.x = 8;
+
+rightCMesh.rotation.z = 8;
+rightCMesh.rotation.x = 0;
+firstSphereArticulation.add(rightCMesh);
 
 // let firstArticulationHelper = new THREE.AxesHelper(15);
 // this.firstSphereArticulation.add(firstArticulationHelper);
