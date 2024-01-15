@@ -17,7 +17,7 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 
-// Event to resize automatically the window
+// Event Listener to resize automatically the window
 window.addEventListener("resize", onWindowResize, false);
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -29,8 +29,15 @@ function onWindowResize() {
 const controls = new OrbitControls(camera, renderer.domElement);
 const loader = new GLTFLoader();
 
-// Plane
+// Assets Imports
 const floor = new THREE.TextureLoader().load("../assets/Material_1861.jpg");
+const cylinderMetal = new THREE.TextureLoader().load(
+  "../assets/Metal_Plate_Cylinder.jpg"
+);
+const sphereMetal = new THREE.TextureLoader().load("../assets/MetalSphere.jpg");
+const boxPlate = new THREE.TextureLoader().load("../assets/MetalPlate.jpg");
+const boxSquare = new THREE.TextureLoader().load("../assets/MetalSquare.jpg");
+const boxMetal = new THREE.TextureLoader().load("../assets/MetalBox.jpg");
 
 // Plane Definition
 function PlaneConstructor() {
@@ -52,122 +59,111 @@ let customPositionPlane = new PlaneConstructor({
 
 PlaneConstructor.prototype.update = () => {};
 
-const cylinderMetal = new THREE.TextureLoader().load(
-  "../assets/Metal_Plate_Cylinder.jpg"
+// Start of Arm Bottom to Top
+// First Cylinder
+const geometryCylinder = new THREE.CylinderGeometry(5, 5, 10, 32);
+const materialCylinder = new THREE.MeshBasicMaterial({
+  map: cylinderMetal,
+});
+const meshCylinder = new THREE.Mesh(geometryCylinder, materialCylinder);
+scene.add(meshCylinder);
+
+// First Sphere
+const geometrySphere = new THREE.SphereGeometry(5, 64, 32);
+const materialSphere = new THREE.MeshBasicMaterial({ map: sphereMetal });
+const sphere = new THREE.Mesh(geometrySphere, materialSphere);
+sphere.position.y = 7;
+scene.add(sphere);
+
+// Second Cylinder
+const lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
+const lowerArmMaterial = new THREE.MeshBasicMaterial({ map: cylinderMetal });
+const lowerArmMesh = new THREE.Mesh(lowerArmGeometry, lowerArmMaterial);
+scene.add(lowerArmMesh);
+lowerArmMesh.position.y = 15;
+lowerArmMesh.position.x = 0;
+// this.lowerArmMesh.add(axesHelper);
+
+// Second Sphere
+const secondArticulation = new THREE.SphereGeometry(5, 64, 32);
+const secondArticulationMaterial = new THREE.MeshBasicMaterial({
+  map: sphereMetal,
+});
+const sphereArticulation = new THREE.Mesh(
+  secondArticulation,
+  secondArticulationMaterial
 );
+sphereArticulation.position.y = 22;
+scene.add(sphereArticulation);
+
+// let secondArticulationHelper = new THREE.AxesHelper(15);
+// this.sphereArticulation.add(secondArticulationHelper);
+// this.pivot.add(this.sphereArticulation);
+
+// Third Cylinder
+const upperArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
+const upperArmMaterial = new THREE.MeshBasicMaterial({ map: cylinderMetal });
+const upperArmMesh = new THREE.Mesh(upperArmGeometry, upperArmMaterial);
+// upperArmMesh.add(axesHelper);
+upperArmMesh.position.y = 30;
+upperArmMesh.position.x = 0;
+// pivot.add(upperArmMesh);
+// scene.add(upperArmMesh);
+
+// Third Sphere
+const firstArticulation = new THREE.SphereGeometry(5, 64, 32);
+const firstArticulationMaterial = new THREE.MeshBasicMaterial({
+  map: sphereMetal,
+});
+const firstSphereArticulation = new THREE.Mesh(
+  firstArticulation,
+  firstArticulationMaterial
+);
+firstSphereArticulation.position.y = 37;
+
+// let firstArticulationHelper = new THREE.AxesHelper(15);
+// this.firstSphereArticulation.add(firstArticulationHelper);
+// this.pivot.add(this.firstSphereArticulation);
 
 // Cylinder Definition
-function CylinderConstructor() {
-  // First Cylinder
-  this.geometry = new THREE.CylinderGeometry(5, 5, 10, 32);
-  this.material = new THREE.MeshBasicMaterial({
-    map: cylinderMetal,
-  });
-  this.mesh = new THREE.Mesh(this.geometry, this.material);
-  scene.add(this.mesh);
+// function CylinderConstructor() {
+//   let axesHelper = new THREE.AxesHelper(18);
+//   this.mesh.add(axesHelper);
 
-  let axesHelper = new THREE.AxesHelper(18);
-  this.mesh.add(axesHelper);
+//   this.pivot = new THREE.Group();
+//   this.pivot.add(this.mesh);
 
-  this.pivot = new THREE.Group();
-  this.pivot.add(this.mesh);
+//   this.pivot.add(this.lowerArmMesh);
+//   scene.add(this.pivot);
 
-  // Second Cylinder
-  this.lowerArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
-  this.lowerArmMaterial = new THREE.MeshBasicMaterial({ map: cylinderMetal });
-  this.lowerArmMesh = new THREE.Mesh(
-    this.lowerArmGeometry,
-    this.lowerArmMaterial
-  );
-  this.lowerArmMesh.add(axesHelper);
-  this.lowerArmMesh.position.y = 15;
-  this.lowerArmMesh.position.x = 0;
-  this.pivot.add(this.lowerArmMesh);
-  scene.add(this.pivot);
+//   scene.add(this.pivot);
+// }
 
-  // Third Cylinder
-  this.upperArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
-  this.upperArmMaterial = new THREE.MeshBasicMaterial({ map: cylinderMetal });
-  this.upperArmMesh = new THREE.Mesh(
-    this.upperArmGeometry,
-    this.upperArmMaterial
-  );
-  this.upperArmMesh.add(axesHelper);
-  this.upperArmMesh.position.y = 30;
-  this.upperArmMesh.position.x = 0;
-  this.pivot.add(this.upperArmMesh);
-  scene.add(this.pivot);
-}
+// let customPositionCylinder = new CylinderConstructor({
+//   position: new THREE.Vector3(0, 0, 0),
+// });
 
-let customPositionCylinder = new CylinderConstructor({
-  position: new THREE.Vector3(0, 0, 0),
-});
+// function EdgesConstructor() {}
 
-function EdgesConstructor() {}
-
-CylinderConstructor.prototype.update = () => {};
-
-const sphereMetal = new THREE.TextureLoader().load("../assets/MetalSphere.jpg");
+// CylinderConstructor.prototype.update = () => {};
 
 // Sphere Definition
-function SphereConstructor() {
-  // First Sphere
-  this.geometry = new THREE.SphereGeometry(5, 64, 32);
-  this.material = new THREE.MeshBasicMaterial({ map: sphereMetal });
-  this.sphere = new THREE.Mesh(this.geometry, this.material);
-  this.sphere.position.y = 7;
+// function SphereConstructor() {
+//   let axesHelper = new THREE.AxesHelper(15);
+//   this.sphere.add(axesHelper);
 
-  let axesHelper = new THREE.AxesHelper(15);
-  this.sphere.add(axesHelper);
+//   this.pivot = new THREE.Group();
+//   this.pivot.add(this.sphere);
 
-  this.pivot = new THREE.Group();
-  this.pivot.add(this.sphere);
+//   scene.add(this.sphere);
+//   scene.add(this.pivot);
+// }
 
-  // Second Sphere
-  this.secondArticulation = new THREE.SphereGeometry(5, 64, 32);
-  this.secondArticulationMaterial = new THREE.MeshBasicMaterial({
-    map: sphereMetal,
-  });
-  this.sphereArticulation = new THREE.Mesh(
-    this.secondArticulation,
-    this.secondArticulationMaterial
-  );
-  this.sphereArticulation.position.y = 22;
+// let customPositionSphere = new SphereConstructor({
+//   position: new THREE.Vector3(0, 0, 0),
+// });
 
-  let secondArticulationHelper = new THREE.AxesHelper(15);
-  this.sphereArticulation.add(secondArticulationHelper);
-
-  this.pivot.add(this.sphereArticulation);
-
-  // Third Sphere
-  this.firstArticulation = new THREE.SphereGeometry(5, 64, 32);
-  this.firstArticulationMaterial = new THREE.MeshBasicMaterial({
-    map: sphereMetal,
-  });
-  this.firstSphereArticulation = new THREE.Mesh(
-    this.firstArticulation,
-    this.firstArticulationMaterial
-  );
-  this.firstSphereArticulation.position.y = 37;
-
-  let firstArticulationHelper = new THREE.AxesHelper(15);
-  this.firstSphereArticulation.add(firstArticulationHelper);
-
-  this.pivot.add(this.firstSphereArticulation);
-
-  scene.add(this.sphere);
-  scene.add(this.pivot);
-}
-
-let customPositionSphere = new SphereConstructor({
-  position: new THREE.Vector3(0, 0, 0),
-});
-
-SphereConstructor.prototype.update = () => {};
-
-const boxPlate = new THREE.TextureLoader().load("../assets/MetalPlate.jpg");
-const boxSquare = new THREE.TextureLoader().load("../assets/MetalSquare.jpg");
-const boxMetal = new THREE.TextureLoader().load("../assets/MetalBox.jpg");
+// SphereConstructor.prototype.update = () => {};
 
 // Box Definition
 function BoxConstructor() {
@@ -207,40 +203,6 @@ let customPositionCube = new BoxConstructor({
   position: new THREE.Vector3(0, 0, 0),
 });
 
-// const cubes = [""];
-
-// const geometryl = new THREE.SphereGeometry(100, 100, 100);
-
-// const wireframe = new THREE.WireframeGeometry(geometryl);
-
-// const line = new THREE.LineSegments(wireframe);
-// line.material.depthTest = false;
-// line.material.opacity = 0.25;
-// line.material.transparent = true;
-
-// scene.add(line);
-
-// const geometry = new THREE.BoxGeometry(100, 100, 100);
-// const edges = new THREE.EdgesGeometry(geometry);
-// const linel = new THREE.LineSegments(
-//   edges,
-//   new THREE.LineBasicMaterial({ color: 0xffffff })
-// );
-// scene.add(linel);
-
-// DragControls
-// const dragControls = new DragControls(cubes, camera, renderer.domElement);
-
-// add event listener to highlight dragged objects
-
-// dragControls.addEventListener("dragstart", function (event) {
-//   event.object.material.emissive.set(0xaaaaaa);
-// });
-
-// dragControls.addEventListener("dragend", function (event) {
-//   event.object.material.emissive.set(0x000000);
-// });
-
 // Camera Position
 camera.position.set(0, 20, 100);
 controls.update();
@@ -250,9 +212,6 @@ function animate() {
   requestAnimationFrame(animate);
   controls.update();
 
-  // line.rotation.x += 0.001;
-  // line.rotation.y += 0.00001;
-  // line.rotation.z += 0.00001;
   // Render the scene
   renderer.render(scene, camera);
 }
