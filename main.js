@@ -2,7 +2,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { DragControls } from "three/addons/controls/DragControls.js";
 
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -11,7 +10,7 @@ document.body.appendChild(renderer.domElement);
 // Initialization of Scene and Camera
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
-  45,
+  55,
   window.innerWidth / window.innerHeight,
   1,
   1000
@@ -37,6 +36,7 @@ const sphereMetal = new THREE.TextureLoader().load("../assets/MetalSphere.jpg");
 const boxPlate = new THREE.TextureLoader().load("../assets/MetalPlate.jpg");
 const boxSquare = new THREE.TextureLoader().load("../assets/MetalSquare.jpg");
 const boxMetal = new THREE.TextureLoader().load("../assets/MetalBox.jpg");
+const metalArm = new THREE.TextureLoader().load("../assets/MetalArm.jpg");
 
 // Plane Definition
 function PlaneConstructor() {
@@ -58,8 +58,11 @@ let customPositionPlane = new PlaneConstructor({
 
 PlaneConstructor.prototype.update = () => {};
 
-// Pivot Creation
-const pivot = new THREE.Object3D();
+// Directional Light
+const light = new THREE.PointLight(0xff0000, 1, 100);
+light.position.set(0, 10, 4);
+light.castShadow = true; // default false
+scene.add(light);
 
 // Start of Arm Bottom to Top
 // First Cylinder
@@ -78,7 +81,6 @@ const materialSphere = new THREE.MeshBasicMaterial({ map: sphereMetal });
 const sphere = new THREE.Mesh(geometrySphere, materialSphere);
 let axesFsphere = new THREE.AxesHelper(18);
 sphere.add(axesFsphere);
-pivot.add(sphere);
 sphere.position.y = 7;
 meshCylinder.add(sphere);
 
@@ -105,8 +107,9 @@ const sphereArticulation = new THREE.Mesh(
 sphereArticulation.position.y = 8;
 let axesSsphere = new THREE.AxesHelper(18);
 sphereArticulation.add(axesSsphere);
-pivot.add(sphereArticulation);
 lowerArmMesh.add(sphereArticulation);
+
+// sphereArticulation.rotation.x = Math.PI/3
 
 // Third Cylinder
 const upperArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
@@ -134,7 +137,7 @@ upperArmMesh.add(firstSphereArticulation);
 
 // Left Claw
 const leftClaw = new THREE.BoxGeometry(3, 10, 1);
-const leftCMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const leftCMaterial = new THREE.MeshBasicMaterial({ map: metalArm });
 const leftCMesh = new THREE.Mesh(leftClaw, leftCMaterial);
 // Position Left Claw
 leftCMesh.position.y = 1;
@@ -145,9 +148,11 @@ leftCMesh.rotation.z = 8;
 leftCMesh.rotation.x = 0;
 firstSphereArticulation.add(leftCMesh);
 
+// ! Adjust the edges
+
 // Right Claw
 const rightClaw = new THREE.BoxGeometry(3, 10, 1);
-const rightCMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+const rightCMaterial = new THREE.MeshBasicMaterial({ map: metalArm });
 const rightCMesh = new THREE.Mesh(rightClaw, rightCMaterial);
 // Position Right Claw
 rightCMesh.position.y = 1;
@@ -158,6 +163,7 @@ rightCMesh.rotation.z = 8;
 rightCMesh.rotation.x = 0;
 firstSphereArticulation.add(rightCMesh);
 
+// Click Event for the Claws
 window.addEventListener("mouseup", () => {
   leftCMesh.rotation.y = 0;
   rightCMesh.rotation.y = 0;
@@ -171,7 +177,7 @@ window.addEventListener("mousedown", () => {
 // Box Definition
 function BoxConstructor() {
   // First Box
-  this.geometry = new THREE.BoxGeometry(10, 10, 10);
+  this.geometry = new THREE.BoxGeometry(8, 8, 8);
   this.material = new THREE.MeshBasicMaterial({
     map: boxPlate,
   });
@@ -180,7 +186,7 @@ function BoxConstructor() {
   this.cube.position.y = 0;
 
   // Second Box
-  this.boxSquareGeometry = new THREE.BoxGeometry(10, 10, 10);
+  this.boxSquareGeometry = new THREE.BoxGeometry(8, 8, 8);
   this.boxSquareMaterial = new THREE.MeshBasicMaterial({
     map: boxSquare,
   });
@@ -193,7 +199,7 @@ function BoxConstructor() {
   this.boxSquareCube.position.z = 15;
 
   // Third Box
-  this.thirdBox = new THREE.BoxGeometry(10, 10, 10);
+  this.thirdBox = new THREE.BoxGeometry(8, 8, 8);
   this.thirdBoxMaterial = new THREE.MeshBasicMaterial({ map: boxMetal });
   this.thirdCube = new THREE.Mesh(this.thirdBox, this.thirdBoxMaterial);
   this.thirdCube.position.y = 0;
@@ -213,6 +219,7 @@ controls.update();
 // Render loop
 function animate() {
   requestAnimationFrame(animate);
+
   controls.update();
 
   // Render the scene
