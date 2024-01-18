@@ -58,6 +58,9 @@ let customPositionPlane = new PlaneConstructor({
 
 PlaneConstructor.prototype.update = () => {};
 
+// Pivot Creation
+const pivot = new THREE.Object3D();
+
 // Start of Arm Bottom to Top
 // First Cylinder
 const geometryCylinder = new THREE.CylinderGeometry(5, 5, 10, 32);
@@ -75,6 +78,7 @@ const materialSphere = new THREE.MeshBasicMaterial({ map: sphereMetal });
 const sphere = new THREE.Mesh(geometrySphere, materialSphere);
 let axesFsphere = new THREE.AxesHelper(18);
 sphere.add(axesFsphere);
+pivot.add(sphere);
 sphere.position.y = 7;
 meshCylinder.add(sphere);
 
@@ -101,11 +105,8 @@ const sphereArticulation = new THREE.Mesh(
 sphereArticulation.position.y = 8;
 let axesSsphere = new THREE.AxesHelper(18);
 sphereArticulation.add(axesSsphere);
+pivot.add(sphereArticulation);
 lowerArmMesh.add(sphereArticulation);
-
-// let secondArticulationHelper = new THREE.AxesHelper(15);
-// this.sphereArticulation.add(secondArticulationHelper);
-// this.pivot.add(this.sphereArticulation);
 
 // Third Cylinder
 const upperArmGeometry = new THREE.CylinderGeometry(5, 5, 10, 32);
@@ -156,58 +157,14 @@ rightCMesh.rotation.x = 0;
 firstSphereArticulation.add(rightCMesh);
 
 window.addEventListener("mouseup", () => {
-  leftCMesh.position.x = -20;
-  rightCMesh.position.y = 20;
+  leftCMesh.position.x = 0;
+  rightCMesh.position.y = 0;
 });
 
 window.addEventListener("mousedown", () => {
   leftCMesh.position.x = 20;
   rightCMesh.position.y = -20;
 });
-
-// let firstArticulationHelper = new THREE.AxesHelper(15);
-// this.firstSphereArticulation.add(firstArticulationHelper);
-// this.pivot.add(this.firstSphereArticulation);
-
-// Cylinder Definition
-// function CylinderConstructor() {
-//   let axesHelper = new THREE.AxesHelper(18);
-//   this.mesh.add(axesHelper);
-
-//   this.pivot = new THREE.Group();
-//   this.pivot.add(this.mesh);
-
-//   this.pivot.add(this.lowerArmMesh);
-//   scene.add(this.pivot);
-
-//   scene.add(this.pivot);
-// }
-
-// let customPositionCylinder = new CylinderConstructor({
-//   position: new THREE.Vector3(0, 0, 0),
-// });
-
-// function EdgesConstructor() {}
-
-// CylinderConstructor.prototype.update = () => {};
-
-// Sphere Definition
-// function SphereConstructor() {
-//   let axesHelper = new THREE.AxesHelper(15);
-//   this.sphere.add(axesHelper);
-
-//   this.pivot = new THREE.Group();
-//   this.pivot.add(this.sphere);
-
-//   scene.add(this.sphere);
-//   scene.add(this.pivot);
-// }
-
-// let customPositionSphere = new SphereConstructor({
-//   position: new THREE.Vector3(0, 0, 0),
-// });
-
-// SphereConstructor.prototype.update = () => {};
 
 // Box Definition
 function BoxConstructor() {
