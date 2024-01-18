@@ -23,7 +23,6 @@ function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  render();
 }
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -155,6 +154,16 @@ rightCMesh.position.x = 8;
 rightCMesh.rotation.z = 8;
 rightCMesh.rotation.x = 0;
 firstSphereArticulation.add(rightCMesh);
+
+window.addEventListener("mouseup", () => {
+  leftCMesh.position.x = -20;
+  rightCMesh.position.y = 20;
+});
+
+window.addEventListener("mousedown", () => {
+  leftCMesh.position.x = 20;
+  rightCMesh.position.y = -20;
+});
 
 // let firstArticulationHelper = new THREE.AxesHelper(15);
 // this.firstSphereArticulation.add(firstArticulationHelper);
