@@ -136,10 +136,11 @@ upperArmMesh.add(firstSphereArticulation);
 const leftClaw = new THREE.BoxGeometry(3, 10, 1);
 const leftCMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 const leftCMesh = new THREE.Mesh(leftClaw, leftCMaterial);
+// Position Left Claw
 leftCMesh.position.y = 1;
 leftCMesh.position.z = 3;
-leftCMesh.position.x = 8;
-
+leftCMesh.position.x = 5;
+// Rotation Left Claw
 leftCMesh.rotation.z = 8;
 leftCMesh.rotation.x = 0;
 firstSphereArticulation.add(leftCMesh);
@@ -148,22 +149,23 @@ firstSphereArticulation.add(leftCMesh);
 const rightClaw = new THREE.BoxGeometry(3, 10, 1);
 const rightCMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
 const rightCMesh = new THREE.Mesh(rightClaw, rightCMaterial);
+// Position Right Claw
 rightCMesh.position.y = 1;
 rightCMesh.position.z = -3;
-rightCMesh.position.x = 8;
-
+rightCMesh.position.x = 5;
+// Rotation Right Claw
 rightCMesh.rotation.z = 8;
 rightCMesh.rotation.x = 0;
 firstSphereArticulation.add(rightCMesh);
 
 window.addEventListener("mouseup", () => {
-  leftCMesh.position.x = 0;
-  rightCMesh.position.y = 0;
+  leftCMesh.rotation.y = 0;
+  rightCMesh.rotation.y = 0;
 });
 
 window.addEventListener("mousedown", () => {
-  leftCMesh.position.x = 20;
-  rightCMesh.position.y = -20;
+  leftCMesh.rotation.y = 0.5;
+  rightCMesh.rotation.y = -0.5;
 });
 
 // Box Definition
