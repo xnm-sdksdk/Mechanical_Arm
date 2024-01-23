@@ -39,22 +39,15 @@ const boxMetal = new THREE.TextureLoader().load("../assets/MetalBox.jpg");
 const metalArm = new THREE.TextureLoader().load("../assets/MetalArm.jpg");
 
 // Plane Definition
-function PlaneConstructor() {
-  this.geometry = new THREE.PlaneGeometry(100, 100);
-  this.material = new THREE.MeshBasicMaterial({
-    map: floor,
-  });
-  this.mesh = new THREE.Mesh(this.geometry, this.material);
-  this.mesh.position.set(0, -5, 0);
-  this.mesh.rotation.x = -Math.PI / 2;
-  scene.add(this.mesh);
-}
 
-let customPositionPlane = new PlaneConstructor({
-  position: new THREE.Vector3(0, 0, 0),
+const geometryPlane = new THREE.PlaneGeometry(100, 100);
+const materialPlane = new THREE.MeshBasicMaterial({
+  map: floor,
 });
-
-PlaneConstructor.prototype.update = () => {};
+const meshPlane = new THREE.Mesh(geometryPlane, materialPlane);
+meshPlane.position.set(0, -5, 0);
+meshPlane.rotation.x = -Math.PI / 2;
+scene.add(meshPlane);
 
 // Directional Light
 
@@ -174,7 +167,6 @@ let root = new THREE.Object3D();
 scene.add(root);
 
 window.addEventListener("mousemove", (event) => {
-  // Normalize mouse coordinates
   const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
   const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
   const mouseZ = (event.clientY / window.innerHeight) * 2 - 1;
@@ -195,7 +187,6 @@ window.addEventListener("mousemove", (event) => {
   root.position.x += mouseX * moveSpeed;
   root.position.y -= mouseY * moveSpeed;
 
-  // Additional movement along the Z-axis
   const zMoveSpeed = 0.1;
   root.position.z += mouseY * zMoveSpeed;
 });
