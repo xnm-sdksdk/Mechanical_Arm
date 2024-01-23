@@ -170,19 +170,20 @@ window.addEventListener("mousedown", () => {
   rightCMesh.rotation.y = -0.5;
 });
 
+let root = new THREE.Object3D();
+scene.add(root);
 
 window.addEventListener("mousemove", (event) => {
   // Normalize mouse coordinates
   const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
   const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
 
-
   // meshCylinder.rotation.y = mouseX * Math.PI;
   // meshCylinder.rotation.x = mouseY * Math.PI;
 
-
   sphere.rotation.y = mouseX * Math.PI;
   sphere.rotation.x = mouseY * Math.PI;
+  // sphere.rotation.z = mouseY + mouseX * Math.PI;
 
   // lowerArmMesh.rotation.y = mouseX * Math.PI;
   // lowerArmMesh.rotation.x = mouseY * Math.PI;
@@ -196,7 +197,9 @@ window.addEventListener("mousemove", (event) => {
   firstSphereArticulation.rotation.y = mouseX * Math.PI;
   firstSphereArticulation.rotation.x = mouseY * Math.PI;
 
-
+  const moveSpeed = 0.05;
+  root.position.x = mouseX * moveSpeed;
+  root.position.y = mouseY * moveSpeed;
 });
 
 // Box Definition
