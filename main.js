@@ -170,6 +170,35 @@ window.addEventListener("mousedown", () => {
   rightCMesh.rotation.y = -0.5;
 });
 
+
+window.addEventListener("mousemove", (event) => {
+  // Normalize mouse coordinates
+  const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+  const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+
+
+  // meshCylinder.rotation.y = mouseX * Math.PI;
+  // meshCylinder.rotation.x = mouseY * Math.PI;
+
+
+  sphere.rotation.y = mouseX * Math.PI;
+  sphere.rotation.x = mouseY * Math.PI;
+
+  // lowerArmMesh.rotation.y = mouseX * Math.PI;
+  // lowerArmMesh.rotation.x = mouseY * Math.PI;
+
+  sphereArticulation.rotation.y = mouseX * Math.PI;
+  sphereArticulation.rotation.x = mouseY * Math.PI;
+
+  // upperArmMesh.rotation.y = mouseX * Math.PI;
+  // upperArmMesh.rotation.x = mouseY * Math.PI;
+
+  firstSphereArticulation.rotation.y = mouseX * Math.PI;
+  firstSphereArticulation.rotation.x = mouseY * Math.PI;
+
+
+});
+
 // Box Definition
 function BoxConstructor() {
   // First Box
