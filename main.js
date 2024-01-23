@@ -177,29 +177,27 @@ window.addEventListener("mousemove", (event) => {
   // Normalize mouse coordinates
   const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
   const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-
-  // meshCylinder.rotation.y = mouseX * Math.PI;
-  // meshCylinder.rotation.x = mouseY * Math.PI;
+  const mouseZ = (event.clientY / window.innerHeight) * 2 - 1;
 
   sphere.rotation.y = mouseX * Math.PI;
   sphere.rotation.x = mouseY * Math.PI;
-  // sphere.rotation.z = mouseY + mouseX * Math.PI;
-
-  // lowerArmMesh.rotation.y = mouseX * Math.PI;
-  // lowerArmMesh.rotation.x = mouseY * Math.PI;
+  sphere.rotation.z = mouseZ * Math.PI;
 
   sphereArticulation.rotation.y = mouseX * Math.PI;
   sphereArticulation.rotation.x = mouseY * Math.PI;
-
-  // upperArmMesh.rotation.y = mouseX * Math.PI;
-  // upperArmMesh.rotation.x = mouseY * Math.PI;
+  sphereArticulation.rotation.z = mouseZ * Math.PI;
 
   firstSphereArticulation.rotation.y = mouseX * Math.PI;
   firstSphereArticulation.rotation.x = mouseY * Math.PI;
+  firstSphereArticulation.rotation.z = mouseZ * Math.PI;
 
   const moveSpeed = 0.05;
-  root.position.x = mouseX * moveSpeed;
-  root.position.y = mouseY * moveSpeed;
+  root.position.x += mouseX * moveSpeed;
+  root.position.y -= mouseY * moveSpeed;
+
+  // Additional movement along the Z-axis
+  const zMoveSpeed = 0.1;
+  root.position.z += mouseY * zMoveSpeed;
 });
 
 // Box Definition
