@@ -43,8 +43,6 @@ function PlaneConstructor() {
   this.geometry = new THREE.PlaneGeometry(100, 100);
   this.material = new THREE.MeshBasicMaterial({
     map: floor,
-    // roughness: 7,
-    // metalness: 5,
   });
   this.mesh = new THREE.Mesh(this.geometry, this.material);
   this.mesh.position.set(0, -5, 0);
@@ -59,10 +57,6 @@ let customPositionPlane = new PlaneConstructor({
 PlaneConstructor.prototype.update = () => {};
 
 // Directional Light
-const light = new THREE.PointLight(0xff0000, 1, 100);
-light.position.set(0, 10, 4);
-light.castShadow = true; // default false
-scene.add(light);
 
 // Start of Arm Bottom to Top
 // First Cylinder
@@ -133,6 +127,8 @@ const firstSphereArticulation = new THREE.Mesh(
   firstArticulationMaterial
 );
 firstSphereArticulation.position.y = 8;
+let axesTsphere = new THREE.AxesHelper(18);
+firstSphereArticulation.add(axesTsphere);
 upperArmMesh.add(firstSphereArticulation);
 
 // Left Claw
